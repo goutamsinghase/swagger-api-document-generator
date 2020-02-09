@@ -1,0 +1,20 @@
+{
+  "name": "apidocuments",
+  "version": "1.0.0",
+  "description": "API Documents",
+  "main": "index.js",
+  "scripts": {
+    "prestart": "npm install",
+    "start": "node app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3",
+    "express-basic-auth": "^1.1.5",
+    "find-free-port": "^2.0.0",
+    "open": "0.0.5",
+    "swagger-ui-express": "^3.0.9",
+    "yamljs": "^0.3.0"
+  }
+}

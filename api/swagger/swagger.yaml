@@ -1,0 +1,1063 @@
+swagger: "2.0"
+info:
+  description: "This is a API Documentations of App"
+  version: "1.0.0"
+  title: "App - <App Name>"
+  contact:
+    email: "goutam.singha.cse@gmail.com"
+host: "localhost:8000"
+basePath: "/api/v1"
+schemes:
+- "http"
+parameters:
+  DeviceID:
+    name: x-auth-deviceid
+    type: string
+    description: 'Device ID'
+    in: header
+    required: true
+  DeviceType:
+    name: x-auth-devicetype
+    type: string
+    description: 'Device Type'
+    in: header
+    required: true
+  Token:
+    name: x-auth-token
+    type: string
+    description: 'Auth Token'
+    in: header
+    required: true
+  ProfilePicture:
+    in: 'formData'
+    name: 'profilePicture'
+    type: file
+    description: The file to upload.
+  Email:  
+    in: 'formData'
+    name: 'email'
+    type: string
+    description: 'Email'
+ 
+paths:
+  /common/global-config:
+    get:
+      tags:
+      - "Global Config"
+      summary: "Get Global Configuation"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - $ref: '#/parameters/DeviceID'
+      - $ref: '#/parameters/DeviceType'
+      responses:
+        200: 
+          description: "Successful Operation"
+          schema:
+            $ref: "#/definitions/GlobalConfigApiResponse"
+        400: 
+          description: "API Validation Error"
+        403:
+          description: "Unknown Error"
+  
+  # Auth
+  /user/auth/signup/request-otp:
+    post:
+      tags:
+      - "Signup"
+      summary: "Signup Request to User App"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - $ref: '#/parameters/DeviceID'
+      - $ref: '#/parameters/DeviceType'
+      - in: "body"
+        name: "body"
+        description: "Signup Request Body"
+        required: true
+        schema:
+          $ref: "#/definitions/SignupRequestApiBody"
+      responses:
+        200: 
+          description: "Successful Operation"
+          schema:
+            $ref: "#/definitions/SignupRequestApiResponse"
+        400: 
+          description: "API Validation Error"
+        403:
+          description: "Unknown Error"
+        505: 
+          description: "Customer Not Found"
+  /user/auth/signup/resend-otp:
+    post:
+      tags:
+      - "Signup"
+      summary: "Signup Resend OTP to User App"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - $ref: '#/parameters/DeviceID'
+      - $ref: '#/parameters/DeviceType'
+      - in: "body"
+        name: "body"
+        description: "Signup Resend OTP Body"
+        required: true
+        schema:
+          type: object
+          properties:
+           _id:
+            type: string
+            example: '5cb04e9d3390ad53375da0b0'
+      responses:
+        200: 
+          description: "Successful Operation"
+          schema:
+            $ref: "#/definitions/SignupRequestApiResponse"
+        400: 
+          description: "API Validation Error"
+        403:
+          description: "Unknown Error"
+        505: 
+          description: "Customer Not Found"
+  /user/auth/signup/verify-otp:
+    post:
+      tags:
+      - "Signup"
+      summary: "Signup Verify to User App"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - $ref: '#/parameters/DeviceID'
+      - $ref: '#/parameters/DeviceType'
+      - in: "body"
+        name: "body"
+        description: "Signup Verify Body"
+        required: true
+        schema:
+          $ref: "#/definitions/SignupVerifyApiBody"
+      responses:
+        200: 
+          description: "Successful Operation"
+          schema:
+            $ref: "#/definitions/SignupVerifyApiResponse"
+        400: 
+          description: "API Validation Error"
+        403:
+          description: "Unknown Error"
+        505: 
+          description: "Customer Not Found"
+  /user/auth/signup/profile-submit:
+    post:
+      tags:
+      - "Signup"
+      summary: "Submit Profile Information"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - $ref: '#/parameters/DeviceID'
+      - $ref: '#/parameters/DeviceType'
+      - $ref: '#/parameters/Email'
+      - in: 'formData'
+        name: 'dob'
+        type: string
+        description: 'Date of Birth'
+      - in: 'formData'
+        name: 'nationality'
+        type: string
+        description: 'Nationality'
+      - $ref: '#/parameters/ProfilePicture'
+      - in: 'formData'
+        name: '_id'
+        type: string
+        description: '_id'
+      responses:
+        200: 
+          description: "Successful Operation"
+          schema:
+            $ref: "#/definitions/LoginApiResponse"
+        400: 
+          description: "API Validation Error"
+        403:
+          description: "Unknown Error"
+  /user/auth/login/request-otp:
+    post:
+      tags:
+      - "Login"
+      summary: "User Login"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - $ref: '#/parameters/DeviceID'
+      - $ref: '#/parameters/DeviceType'
+      - in: "body"
+        name: "body"
+        description: "Login credentials that needs to be authenticated"
+        required: true
+        schema:
+          $ref: "#/definitions/LoginRequestApiBody"
+      responses:
+        200: 
+          description: "Successful Operation"
+          schema:
+            $ref: "#/definitions/LoginRequestApiResponse"
+        400: 
+          description: "API Validation Error"
+        403:
+          description: "Unknown Error"
+        505: 
+          description: "Customer Not Found"
+  /user/auth/login/verify-otp:
+    post:
+      tags:
+      - "Login"
+      summary: "Verify Login"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - $ref: '#/parameters/DeviceID'
+      - $ref: '#/parameters/DeviceType'
+      - in: "body"
+        name: "body"
+        description: "Verify Login credentials"
+        required: true
+        schema:
+          $ref: "#/definitions/LoginVerifyApiBody"
+      responses:
+        200: 
+          description: "Successful Operation"
+          schema:
+            $ref: "#/definitions/LoginApiResponse"
+        400: 
+          description: "API Validation Error"
+        403:
+          description: "Unknown Error"
+        505: 
+          description: "Customer Not Found"
+ 
+  # Profile
+  /account/user/profile:
+    get:
+      tags:
+      - "Profile"
+      summary: "Get Profile"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - $ref: '#/parameters/DeviceID'
+      - $ref: '#/parameters/DeviceType'
+      - $ref: '#/parameters/Token'
+      responses:
+        200: 
+          description: "Successful Operation"
+          schema:
+            $ref: "#/definitions/ProfileApiResponse"
+        400: 
+          description: "API Validation Error"
+        403:
+          description: "Unknown Error"
+  /account/user/profile/name: 
+    put:
+      tags:
+      - "Profile"
+      summary: "Edit Name"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - $ref: '#/parameters/DeviceID'
+      - $ref: '#/parameters/DeviceType'
+      - $ref: '#/parameters/Token'
+      - in: "body"
+        name: "body"
+        description: "Edit Name API Body"
+        required: true
+        schema:
+          type: object
+          properties: 
+           firstName: 
+            type: string
+            example: Goutam
+           lastName: 
+            type: string
+            example: Singha
+      responses:
+        200: 
+          description: "Successful Operation"
+          schema:
+            $ref: "#/definitions/ProfileApiResponse"
+        400: 
+          description: "API Validation Error"
+        403:
+          description: "Unknown Error"
+  /account/user/profile/phone/request-otp: 
+    put:
+      tags:
+      - "Profile"
+      summary: "Edit Phone Number - Request OTP"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - $ref: '#/parameters/DeviceID'
+      - $ref: '#/parameters/DeviceType'
+      - $ref: '#/parameters/Token'
+      - in: "body"
+        name: "body"
+        description: "Edit Phone Number Request OTP API Body"
+        required: true
+        schema:
+          type: object
+          properties: 
+           phone: 
+            type: object
+            properties:
+              countryCode: 
+               type: string
+               example: 'IN'
+              number: 
+                type: string
+                example: '99078123458'
+      responses:
+        200: 
+          description: "Successful Operation"
+          schema:
+            type: object
+            properties: 
+             success: 
+              type: boolean
+              example: true
+             data: 
+              type: object
+              properties:
+               otp:
+                type: 'string'
+                example: 9078
+        400: 
+          description: "API Validation Error"
+        403:
+          description: "Unknown Error"
+  /account/user/profile/phone/verify-otp: 
+    put:
+      tags:
+      - "Profile"
+      summary: "Edit Phone Number - Request OTP"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - $ref: '#/parameters/DeviceID'
+      - $ref: '#/parameters/DeviceType'
+      - $ref: '#/parameters/Token'
+      - in: "body"
+        name: "body"
+        description: "Edit Phone Number Request OTP API Body"
+        required: true
+        schema:
+          type: object
+          properties: 
+           phone: 
+            type: object
+            properties:
+              countryCode: 
+               type: string
+               example: 'IN'
+              number: 
+                type: string
+                example: '99078123458'
+           otp:
+                type: 'string'
+                example: 9078
+      responses:
+        200: 
+          description: "Successful Operation"
+          schema:
+            $ref: "#/definitions/ProfileApiResponse"
+        400: 
+          description: "API Validation Error"
+        403:
+          description: "Unknown Error"
+  /account/user/profile/email: 
+    put:
+      tags:
+      - "Profile"
+      summary: "Edit Email"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - $ref: '#/parameters/DeviceID'
+      - $ref: '#/parameters/DeviceType'
+      - $ref: '#/parameters/Token'
+      - in: "body"
+        name: "body"
+        description: "Edit Email API Body"
+        required: true
+        schema:
+          type: object
+          properties: 
+           email: 
+            type: string
+            example: 'goutam.singha@innofied.com'
+      responses:
+        200: 
+          description: "Successful Operation"
+          schema:
+            $ref: "#/definitions/ProfileApiResponse"
+        400: 
+          description: "API Validation Error"
+        403:
+          description: "Unknown Error"
+  /account/user/profile/dob: 
+    put:
+      tags:
+      - "Profile"
+      summary: "Edit Date of Birth"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - $ref: '#/parameters/DeviceID'
+      - $ref: '#/parameters/DeviceType'
+      - $ref: '#/parameters/Token'
+      - in: "body"
+        name: "body"
+        description: "Edit DOB API Body"
+        required: true
+        schema:
+          type: object
+          properties: 
+           dob: 
+            type: string
+            example: "1990-07-15T18:30:00.000Z"
+      responses:
+        200: 
+          description: "Successful Operation"
+          schema:
+            $ref: "#/definitions/ProfileApiResponse"
+        400: 
+          description: "API Validation Error"
+        403:
+          description: "Unknown Error"
+  /account/user/profile/nationality: 
+    put:
+      tags:
+      - "Profile"
+      summary: "Edit Nationality"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - $ref: '#/parameters/DeviceID'
+      - $ref: '#/parameters/DeviceType'
+      - $ref: '#/parameters/Token'
+      - in: "body"
+        name: "body"
+        description: "Edit Nationality API Body"
+        required: true
+        schema:
+          type: object
+          properties: 
+           nationality: 
+            type: string
+            example: "US"
+      responses:
+        200: 
+          description: "Successful Operation"
+          schema:
+            $ref: "#/definitions/ProfileApiResponse"
+        400: 
+          description: "API Validation Error"
+        403:
+          description: "Unknown Error"
+  /account/user/profile/toggle-notification: 
+    put:
+      tags:
+      - "Profile"
+      summary: "Toggle Notification"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - $ref: '#/parameters/DeviceID'
+      - $ref: '#/parameters/DeviceType'
+      - $ref: '#/parameters/Token'
+      - in: "body"
+        name: "body"
+        description: "Edit Nationality API Body"
+        required: true
+        schema:
+          type: object
+          properties: 
+           notificationStatus: 
+            type: boolean
+            example: false
+      responses:
+        200: 
+          description: "Successful Operation"
+          schema:
+            $ref: "#/definitions/ProfileApiResponse"
+        400: 
+          description: "API Validation Error"
+        403:
+          description: "Unknown Error"
+  /account/user/profile/language:
+    put:
+      tags:
+      - "Profile"
+      summary: "Change Language"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - $ref: '#/parameters/DeviceID'
+      - $ref: '#/parameters/DeviceType'
+      - $ref: '#/parameters/Token'
+      - in: "body"
+        name: "body"
+        description: "Change Language Api Body"
+        required: true
+        schema:
+          type: object
+          properties:
+           lang:
+            type: string
+            example: 'en'
+      responses:
+        200: 
+          description: "Successful Operation"
+          schema:
+            $ref: "#/definitions/SuccessApiResponse"
+        400: 
+          description: "API Validation Error"
+        403:
+          description: "Unknown Error"
+  /account/user/settings:
+    get:
+      tags:
+      - "Profile"
+      summary: "Get Settings"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - $ref: '#/parameters/DeviceID'
+      - $ref: '#/parameters/DeviceType'
+      - $ref: '#/parameters/Token'
+      responses:
+        200: 
+          description: "Successful Operation"
+          schema:
+            $ref: "#/definitions/SettingsApiResponse"
+        400: 
+          description: "API Validation Error"
+        403:
+          description: "Unknown Error"
+  /account/user/profile/logout:
+    put:
+      tags:
+      - "Profile"
+      summary: "Logout Profile"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - $ref: '#/parameters/DeviceID'
+      - $ref: '#/parameters/DeviceType'
+      - $ref: '#/parameters/Token'
+      responses:
+        200: 
+          description: "Successful Operation"
+          schema:
+            $ref: "#/definitions/SuccessApiResponse"
+        400: 
+          description: "API Validation Error"
+        403:
+          description: "Unknown Error"
+
+ 
+definitions:
+  SignupRequestApiBody: 
+    type: "object"
+    properties:
+      firstName: 
+       type: 'string'
+       example: 'Goutam'
+      lastName: 
+       type: 'string'
+       example: 'Singha'
+      phone: 
+        type: object
+        properties: 
+         countryCode: 
+          type: string
+          example: 'IN'
+         number: 
+          type: number
+          example: '90896745231'
+  SignupRequestApiResponse:
+    type: "object"
+    properties: 
+     success: 
+      type: "boolean"
+      default: true
+     data:
+      type: object
+      properties: 
+       _id:
+        type: string
+        example: '5cb072fbe11305612a020d2c'
+       otp:
+        type: string
+        example: '1234567'
+  SignupVerifyApiBody:
+    type: "object"
+    properties:
+      _id:
+       type: "string"
+       example: "5cb04e9d3390ad53375da0b0"
+      otp: 
+        type: "string"
+        example: "1234567"
+  SignupVerifyApiResponse:
+    type: "object"
+    properties: 
+     success: 
+      type: "boolean"
+      default: true
+     data:
+      type: object
+      properties: 
+       _id:
+        type: string
+        example: '5cb072fbe11305612a020d2c'
+  LoginRequestApiBody:
+    type: "object"
+    properties:
+      phone: 
+        type: object
+        properties: 
+         countryCode: 
+          type: string
+          example: 'IN'
+         number: 
+          type: number
+          example: '90896745231'
+  LoginRequestApiResponse: 
+    type: "object"
+    properties: 
+     success: 
+      type: "boolean"
+      default: true
+     data:
+      type: object
+      properties: 
+       _id:
+        type: string
+        example: '5cb072fbe11305612a020d2c'
+       otp:
+        type: string
+        example: '1234567'
+  LoginVerifyApiBody:
+    type: "object"
+    properties:
+      phone: 
+        type: object
+        properties: 
+         countryCode: 
+          type: string
+          example: 'IN'
+         number: 
+          type: number
+          example: '90896745231'
+      otp: 
+       type: string
+       example: "1234"
+  SuccessApiResponse: 
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+  LoginApiResponse:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+      data:
+        type: "object"
+        properties: 
+          token: 
+            type: "string"
+          user:
+            type: "object"
+            properties:
+              _id:
+               type: string
+               example: "5b90b611705f7526d2c07130"
+              displayId:
+               type: string
+               example: "CUST_RVH7MTCD"
+              personalInfo: 
+                type: object
+                properties: 
+                 firstName: 
+                  type: "string"
+                  example: "Goutam"
+                 lastName: 
+                  type: "string"
+                  example: "Singha" 
+                 email:
+                  type: "string"
+                  format: "email"
+                  example: 'goutam.singha@innofied.com'
+                 dob: 
+                  type: 'string'
+                  example: '1990-07-15T18:30:00.000Z'
+                 nationality: 
+                  type: 'string'
+                  example: 'Indian'
+                 phone: 
+                  type: object
+                  properties: 
+                   countryCode: 
+                    type: string
+                    example: 'IN'
+                   number: 
+                    type: string
+                    example: '90781234567'
+                 profilePicture:
+                  type: string
+                  example: "http://192.168.0.16:8001/uploads/jlq4fk3q08ag320a1255v98c.png"
+              settings:
+                type: object
+                properties:
+                 selectedLanguage: 
+                  type: string
+                  example: 'US'
+                 isNotificationEnabled:
+                  type: boolean
+                  example: true
+              accountStatus:
+               type: number
+               example: 2
+              customEventTypes:
+               type: array
+               items: 
+                type: string
+                example: 'Morning Walk'
+              contacts: 
+                type: array
+                items: 
+                 type: object
+                 properties:
+                   _id:
+                    type: string
+                    example: "5b90b611705f7526d2c07130"
+                   isWSUMember: 
+                    type: boolean
+                    example: true
+                   personalInfo: 
+                    type: object
+                    properties:
+                     firstName: 
+                      type: "string"
+                      example: "Goutam"
+                     lastName: 
+                      type: "string"
+                      example: "Singha" 
+                     email:
+                      type: "string"
+                      format: "email"
+                      example: 'goutam.singha@innofied.com'
+                     dob: 
+                      type: 'string'
+                      example: '1990-07-15T18:30:00.000Z'
+                     nationality: 
+                      type: 'string'
+                      example: 'Indian'
+                     phone: 
+                      type: object
+                      properties: 
+                       countryCode: 
+                        type: string
+                        example: 'IN'
+                       number: 
+                        type: string
+                        example: '90781234567'
+                       profilePicture:
+                        type: string
+                        example: "http://192.168.0.16:8001/uploads/jlq4fk3q08ag320a1255v98c.png"
+              subscriptionInfo:
+               type: object
+               properties: 
+                isFreeTrail:
+                 type: boolean
+                 example: true
+                subscriptionId:
+                 type: string
+                 example: '5d4d627303a9585cc30aca55'
+                isAutoRenewOn:
+                 type: boolean
+                 example: true
+  ProfileApiResponse: 
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+      data:
+        type: "object"
+        properties:
+         _id:
+          type: string
+          example: "5b90b611705f7526d2c07130"
+         displayId:
+          type: string
+          example: "CUST_RVH7MTCD"
+         personalInfo: 
+          type: object
+          properties: 
+           firstName: 
+            type: "string"
+            example: "Goutam"
+           lastName: 
+            type: "string"
+            example: "Singha" 
+           email:
+            type: "string"
+            format: "email"
+            example: 'goutam.singha@innofied.com'
+           dob: 
+            type: 'string'
+            example: '1990-07-15T18:30:00.000Z'
+           nationality: 
+            type: 'string'
+            example: 'Indian'
+           phone: 
+            type: object
+            properties: 
+             countryCode: 
+              type: string
+              example: 'IN'
+             number: 
+              type: string
+              example: '90781234567'
+           profilePicture:
+            type: string
+            example: "http://192.168.0.16:8001/uploads/jlq4fk3q08ag320a1255v98c.png"
+         settings:
+          type: object
+          properties:
+           selectedLanguage: 
+            type: string
+            example: 'US'
+           isNotificationEnabled:
+            type: boolean
+            example: true
+           maxNoOfInvitee:
+            type: number
+            example: 100
+         accountStatus:
+          type: number
+          example: 2
+         customEventTypes:
+          type: array
+          items: 
+           type: string
+           example: 'Morning Walk'
+         contacts: 
+          type: array
+          items: 
+           type: object
+           properties:
+             _id:
+              type: string
+              example: "5b90b611705f7526d2c07130"
+             personalInfo: 
+              type: object
+              properties:
+               localName: 
+                type: "string"
+                example: "Goutam Singha"
+               firstName: 
+                type: "string"
+                example: "Goutam"
+               lastName: 
+                type: "string"
+                example: "Singha" 
+               email:
+                type: "string"
+                format: "email"
+                example: 'goutam.singha@innofied.com'
+               dob: 
+                type: 'string'
+                example: '1990-07-15T18:30:00.000Z'
+               nationality: 
+                type: 'string'
+                example: 'Indian'
+               phone: 
+                type: object
+                properties: 
+                 countryCode: 
+                  type: string
+                  example: 'IN'
+                 number: 
+                  type: string
+                  example: '90781234567'
+                 profilePicture:
+                  type: string
+                  example: "http://192.168.0.16:8001/uploads/jlq4fk3q08ag320a1255v98c.png"
+               phoneWithCountryCode:
+                type: string
+                example: '+91 897121212121'
+         subscriptionInfo:
+            type: object
+            properties: 
+              isFreeTrail:
+                type: boolean
+                example: true
+              subscriptionId:
+                type: object
+                properties: 
+                 user: 
+                  type: string
+                 planId: 
+                  type: string
+                  example: 'asdasdasd'
+                 name: 
+                  type: string
+                 description:
+                  type: string
+                 appStore:
+                  type: object
+                  properties:
+                    productId: 
+                     type: string
+                    price: 
+                     type: number
+                    transactionHistory: 
+                     type: array
+                     items: 
+                      type: object
+                      properties:
+                        transactionId: 
+                         type: string
+                        price: 
+                         type: number
+                        priceLocale: 
+                         type: string
+                        transactionDate:
+                         type: string
+                 playStore:
+                  type: object
+                  properties:
+                    productId: 
+                     type: string
+                    price: 
+                     type: number
+                    transactionHistory: 
+                     type: array
+                     items:
+                      type: object
+                      properties:
+                        transactionId: 
+                         type: string
+                        price: 
+                         type: number
+                        priceLocale: 
+                         type: string
+                        transactionDate:
+                         type: string
+                 duration: 
+                  type: number
+                 subscriptionExpiryDate: 
+                  type: string
+                 subscriptionActivationDate:
+                  type: string
+                 numberOfInvitee: 
+                  type: number
+                  example: 
+                 isAutoRenewOn:
+                  type: boolean
+                  example: true
+  ###########################################
+  # Settings
+  ###########################################
+  SettingsApiResponse:
+    type: object
+    properties: 
+     success: 
+      type: boolean
+      default: true
+     data: 
+      type: object
+      properties:
+       globalConfig: 
+        type: object
+        properties: 
+         maxNoOfInvitee:
+           type: number
+           example: 100
+         minPublishEventThreshold:
+          type: number
+          example: 60
+         minCancellationThreshold:
+          type: number
+          example: 60
+         faqLink:
+          type: string
+          example: 'http://abc.com/faq'
+         privacyLink:
+          type: string
+          example: 'http://abc.com/privacy'
+         termsLink:
+          type: string
+          example: 'http://abc.com/terms'
+  GlobalConfigApiResponse:
+    type: object
+    properties: 
+     success: 
+      type: boolean
+      default: true
+     data: 
+      type: object
+      properties:
+         faqLink:
+          type: string
+          example: 'http://abc.com/faq'
+         privacyLink:
+          type: string
+          example: 'http://abc.com/privacy'
+         termsLink:
+          type: string
+          example: 'http://abc.com/terms'
+         appStoreLink:
+          type: string
+          example: 'https://www.apple.com/in/itunes/download/'
+         playStoreLink:
+          type: string
+          example: 'https://www.apple.com/in/itunes/download/'
