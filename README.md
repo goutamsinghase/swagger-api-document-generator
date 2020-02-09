@@ -44,7 +44,8 @@ Open the Swagger Editor  -
 $ swagger project edit
 ```
 
-You can edit swagger api document by following swagger 2.0 documentation.
+You can edit swagger api document by following [swagger 2.0 documentation.](https://swagger.io/docs/specification/2-0/basic-structure/)
+
 
 
 ## Authors
