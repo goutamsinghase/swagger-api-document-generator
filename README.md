@@ -23,7 +23,7 @@ $ npm start
 ```
 Swagger API Document will be opened in default browser automatically. 
 
-The Credentials to open the document -
+The credential are given below to open the swagger api document -
 
 
 User - goutam.singha.cse@gmail.com
