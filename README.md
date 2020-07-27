@@ -51,7 +51,3 @@ You can edit swagger api document by following [swagger 2.0 documentation.](http
 ## Authors
 
 * **Goutam Singha** - *Initial work* 
-
-## Acknowledgments
-
-* [IntuifyCode Solution Pvt. Ltd.](http://www.intuifycode.com)
