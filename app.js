@@ -20,7 +20,7 @@ const app = express();
 app.use('/swagger-api-docs/user', basicAuth({
   users: { 'goutam.singha.cse@gmail.com': '1234' },
   challenge: true,
-  realm: 'IntuifyCode Solution Pvt. Ltd.',
+  realm: '<Company Name>',
 }), swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 //////////////////
